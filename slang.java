@@ -75,7 +75,7 @@ public class slang {
     public static ArrayList<String> Find_with_value(String value) {
         ArrayList<String> keySet = new ArrayList<String>();
         for(String a : slangMap.keySet())
-            if(slangMap.get(a).equals(value)){
+            if(slangMap.get(a).contains(value)){
                 keySet.add(a);
             }
         return keySet;
@@ -108,7 +108,7 @@ public class slang {
                     ArrayList<String> keySet = Find_with_value(def);
                     System.out.println("Slang word of " + def + " is: ");
                     for(String a : keySet){
-                        System.out.println(a);
+                        System.out.println(a + " : " + slangMap.get(a));
                     }
                     break;
                 case 3:
