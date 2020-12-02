@@ -9,12 +9,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.print.event.PrintEvent;
+import java.util.ArrayList; 
+import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
 
 // import sun.swing.PrintColorUIResource;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 // import java.lang.String;
@@ -23,6 +26,7 @@ public class slang {
 
     public static Scanner keyboard = new Scanner(System.in);
     public static HashMap<String, String> slangMap = new HashMap<String, String>();
+    // public static HashMap<String, String> valueMap = new HashMap<String, String>();
 
     public static HashMap<String, String> GetSlangMap(String url) {
         
@@ -67,14 +71,23 @@ public class slang {
     public static String Find_with_slang(String key) {
         return slangMap.get(key);
     }
+
+    public static ArrayList<String> Find_with_value(String value) {
+        ArrayList<String> keySet = new ArrayList<String>();
+        for(String a : slangMap.keySet())
+            if(slangMap.get(a).equals(value)){
+                keySet.add(a);
+            }
+        return keySet;
+    }
     
     public static void GUI(){
         String out = "";
         while(!"e".equals(out)){
-            // System.out.print("\033[H\033[2J");
-            // System.out.flush();
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
             System.out.println("1. Slang word");
-            // System.out.println("");
+            System.out.println("2. Find with definition");
             // System.out.println("");
             // System.out.println("");
             // System.out.println("");
@@ -84,15 +97,20 @@ public class slang {
             String c = keyboard.nextLine();
             switch (choose) {
                 case 1:
-                System.out.println("Your slang word: ");
-                String key = keyboard.nextLine();
-                // c = keyboard.nextLine();
-                String value = Find_with_slang(key);
-                System.out.println(key + "'s definition is: " + value);
-                break;
+                    System.out.print("Your slang word: ");
+                    String key = keyboard.nextLine();
+                    String value = Find_with_slang(key);
+                    System.out.println(key + "'s definition is: " + value);
+                    break;
                 case 2:
-                System.out.println("Tuesday");
-                break;
+                    System.out.print("Your definition: ");
+                    String def = keyboard.nextLine();
+                    ArrayList<String> keySet = Find_with_value(def);
+                    System.out.println("Slang word of " + def + " is: ");
+                    for(String a : keySet){
+                        System.out.println(a);
+                    }
+                    break;
                 case 3:
                 System.out.println("Wednesday");
                 break;
@@ -117,6 +135,7 @@ public class slang {
     public static void main(String[] args) {
         slangMap = GetSlangMap("slang.txt");
         GUI();
+        // System.out.println(Find_with_value("Penis"));
     }
 }
 
