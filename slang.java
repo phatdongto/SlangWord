@@ -82,21 +82,21 @@ public class slang {
         return keySet;
     }
     
-    public static void SaveHistory(String s) {
-    try {
-        File file = new File("history.txt");
-        FileWriter fr = new FileWriter(file, true);
-
+    public static void Append_to_file(String s, String url) {
         try {
-            fr.write(s);
-        } catch (Exception e) {
-            System.out.println("cant write file");
-        }finally{
-            fr.close();
+            File file = new File(url);
+            FileWriter fr = new FileWriter(file, true);
+
+            try {
+                fr.write(s);
+            } catch (Exception e) {
+                System.out.println("cant write file");
+            }finally{
+                fr.close();
+            }
+        }catch(Exception e){
+            System.out.println("cant open file");
         }
-    }catch(Exception e){
-        System.out.println("cant open file");
-    }
 }
 
     public static void ShowHistory() {
@@ -136,11 +136,27 @@ public class slang {
         }
     }
 
+    public static void Add_slang_word(String slang_key, String def_value) {
+       String choose;
+        if(slangMap.containsValue(def_value)){
+            System.out.println("Slang word duplicate !!!");
+            System.out.println("Choose 1 to overwrite");
+            System.out.println("Choose 2 to duplicate to new slang word");
+            System.out.print("Your choose: ");
+            choose = keyboard.nextLine();
+
+        }else{
+            slangMap.put(slang_key, def_value);
+            Append_to_file(slang_key + "`" + def_value + "\n", "slang.txt");
+            System.out.println("Add new slangword successfully");
+        }
+    }
+    
     public static void GUI(){
         String out = "";
         while(!"e".equals(out)){
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
+            // System.out.print("\033[H\033[2J");
+            // System.out.flush();
 
             System.out.println("1. Slang word");
             System.out.println("2. Find with definition");
@@ -157,7 +173,7 @@ public class slang {
                     String key = keyboard.nextLine();
                     String value = Find_with_slang(key);
                     if(!(value == null)){
-                        SaveHistory(key + " : " + value + "\n");
+                        Append_to_file(key + " : " + value + "\n", "history.txt");
                         System.out.println(key + "'s definition is: " + value);
                     }
                     else{
@@ -170,7 +186,7 @@ public class slang {
                     ArrayList<String> keySet = Find_with_value(def);
                     System.out.println("Slang word of " + def + " is: ");
                     for(String a : keySet){
-                        SaveHistory(a + " : " + slangMap.get(a) + "\n");
+                        Append_to_file(a + " : " + slangMap.get(a) + "\n", "history.txt");
                         System.out.println(a + " : " + slangMap.get(a));
                     }
                     break;
@@ -178,7 +194,12 @@ public class slang {
                     ShowHistory();
                     break;
                 case 4:
-                    System.out.println("Thursday");
+                    System.out.print("Enter slang word: ");
+                    String slang_key = keyboard.nextLine();
+                    System.out.print("Enter definition: ");
+                    String def_value = keyboard.nextLine();
+                    Add_slang_word(slang_key, def_value);
+
                     break;
                 case 5:
                 System.out.println("Friday");
