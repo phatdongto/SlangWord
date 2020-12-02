@@ -11,14 +11,11 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ArrayList; 
-import java.util.Iterator;
-import java.util.Set;
-import java.util.HashSet;
+import java.io.PrintWriter;
 
-// import sun.swing.PrintColorUIResource;
+
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 // import java.lang.String;
@@ -97,7 +94,27 @@ public class slang {
         }catch(Exception e){
             System.out.println("cant open file");
         }
-}
+    }
+
+    public static void Truncate_to_file(String url) {
+        File file = new File(url);
+        try (PrintWriter pw = new PrintWriter(file)) {
+            try {
+                for(String a : slangMap.keySet()){
+                    pw.println(a + "`" + slangMap.get(a));
+                }
+            } catch (Exception e) {
+                System.out.println("Can't trancate to file");
+            } finally{
+                pw.close();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public static void ShowHistory() {
         try{
@@ -138,17 +155,36 @@ public class slang {
 
     public static void Add_slang_word(String slang_key, String def_value) {
        String choose;
-        if(slangMap.containsValue(def_value)){
+        if(slangMap.containsKey(slang_key)){
             System.out.println("Slang word duplicate !!!");
             System.out.println("Choose 1 to overwrite");
             System.out.println("Choose 2 to duplicate to new slang word");
             System.out.print("Your choose: ");
             choose = keyboard.nextLine();
+            if(choose.equals("1")){
+                slangMap.put(slang_key, def_value);
+                Truncate_to_file("testdata.txt");
+                System.out.println("Overwrite successfully");
+            }else{
+                slangMap.put(slang_key, slangMap.get(slang_key) + "| " + def_value );
+                Truncate_to_file("testdata.txt");
+                System.out.println("Duplicate successfully");
+            }
 
         }else{
             slangMap.put(slang_key, def_value);
-            Append_to_file(slang_key + "`" + def_value + "\n", "slang.txt");
+            Append_to_file(slang_key + "`" + def_value + "\n", "testdata.txt");
             System.out.println("Add new slangword successfully");
+        }
+    }
+    
+    public static void Edit_slang_word(String edit_key, String edit_value) {
+        if(slangMap.containsKey(edit_key)){
+            slangMap.put(edit_key, edit_value);
+            Truncate_to_file("testdata.txt");
+            System.out.println("Edit completed");
+        }else{
+            System.out.println("Slang word not found !!!");
         }
     }
     
@@ -162,6 +198,7 @@ public class slang {
             System.out.println("2. Find with definition");
             System.out.println("3. Show history");
             System.out.println("4. Add new slang word");
+            System.out.println("5. Edit slang word");
             // System.out.println("");
             // System.out.println("");
             System.out.print("Enter your choose: ");
@@ -199,11 +236,14 @@ public class slang {
                     System.out.print("Enter definition: ");
                     String def_value = keyboard.nextLine();
                     Add_slang_word(slang_key, def_value);
-
                     break;
                 case 5:
-                System.out.println("Friday");
-                break;
+                    System.out.print("Enter slang word: ");
+                    String edit_key = keyboard.nextLine();
+                    System.out.print("Enter definition: ");
+                    String edit_value = keyboard.nextLine();
+                    Edit_slang_word(edit_key, edit_value);
+                    break;
                 case 6:
                 System.out.println("Saturday");
                 break;
@@ -217,7 +257,7 @@ public class slang {
     }
 
     public static void main(String[] args) {
-        slangMap = GetSlangMap("slang.txt");
+        slangMap = GetSlangMap("testdata.txt");
         GUI();
         // System.out.println(Find_with_value("Penis"));
     }
