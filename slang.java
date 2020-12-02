@@ -4,6 +4,7 @@
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class slang {
 
     public static Scanner keyboard = new Scanner(System.in);
     public static HashMap<String, String> slangMap = new HashMap<String, String>();
-    // public static HashMap<String, String> valueMap = new HashMap<String, String>();
+    public static ArrayList<String> history = new ArrayList<String>();
 
     public static HashMap<String, String> GetSlangMap(String url) {
         
@@ -81,15 +82,70 @@ public class slang {
         return keySet;
     }
     
+    public static void SaveHistory(String s) {
+    try {
+        File file = new File("history.txt");
+        FileWriter fr = new FileWriter(file, true);
+
+        try {
+            fr.write(s);
+        } catch (Exception e) {
+            System.out.println("cant write file");
+        }finally{
+            fr.close();
+        }
+    }catch(Exception e){
+        System.out.println("cant open file");
+    }
+}
+
+    public static void ShowHistory() {
+        try{
+            File file = new File("history.txt");
+            FileReader fr = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fr);
+            
+            String tmp = "error";
+            int inc = 0;
+            
+            System.out.println("!!!History!!!");
+
+            try {
+                tmp = reader.readLine();
+                while (tmp != null) {
+                    System.out.println( ++inc + ". " + tmp);
+                    tmp = reader.readLine();
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(slang.class.getName())
+                                .log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(slang.class.getName())
+                                .log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    reader.close();
+                    // file.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(slang.class.getName())
+                                    .log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch(Exception e){
+            System.out.println("Error: " + e);
+        }
+    }
+
     public static void GUI(){
         String out = "";
         while(!"e".equals(out)){
             System.out.print("\033[H\033[2J");
             System.out.flush();
+
             System.out.println("1. Slang word");
             System.out.println("2. Find with definition");
-            // System.out.println("");
-            // System.out.println("");
+            System.out.println("3. Show history");
+            System.out.println("4. Add new slang word");
             // System.out.println("");
             // System.out.println("");
             System.out.print("Enter your choose: ");
@@ -100,7 +156,13 @@ public class slang {
                     System.out.print("Your slang word: ");
                     String key = keyboard.nextLine();
                     String value = Find_with_slang(key);
-                    System.out.println(key + "'s definition is: " + value);
+                    if(!(value == null)){
+                        SaveHistory(key + " : " + value + "\n");
+                        System.out.println(key + "'s definition is: " + value);
+                    }
+                    else{
+                        System.out.println("No definition founded !!");
+                    }
                     break;
                 case 2:
                     System.out.print("Your definition: ");
@@ -108,15 +170,16 @@ public class slang {
                     ArrayList<String> keySet = Find_with_value(def);
                     System.out.println("Slang word of " + def + " is: ");
                     for(String a : keySet){
+                        SaveHistory(a + " : " + slangMap.get(a) + "\n");
                         System.out.println(a + " : " + slangMap.get(a));
                     }
                     break;
                 case 3:
-                System.out.println("Wednesday");
-                break;
+                    ShowHistory();
+                    break;
                 case 4:
-                System.out.println("Thursday");
-                break;
+                    System.out.println("Thursday");
+                    break;
                 case 5:
                 System.out.println("Friday");
                 break;
