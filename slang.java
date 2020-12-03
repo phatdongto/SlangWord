@@ -213,7 +213,7 @@ public class slang {
                     String key = keyboard.nextLine();
                     String value = Find_with_slang(key);
                     if(!(value == null)){
-                        Append_to_file(key + " : " + value + "\n", "history.txt");
+                        Append_to_file(key + "   :   " + value + "\n", "history.txt");
                         System.out.println(key + "'s definition is: " + value);
                     }
                     else{
@@ -226,8 +226,8 @@ public class slang {
                     ArrayList<String> keySet = Find_with_value(def);
                     System.out.println("Slang word of " + def + " is: ");
                     for(String a : keySet){
-                        Append_to_file(a + " : " + slangMap.get(a) + "\n", "history.txt");
-                        System.out.println(a + " : " + slangMap.get(a));
+                        Append_to_file(a + "   :   " + slangMap.get(a) + "\n", "history.txt");
+                        System.out.println(a + "   :   " + slangMap.get(a));
                     }
                     break;
                 case 3:
@@ -256,7 +256,9 @@ public class slang {
                     Back_up_origin();
                     break;
                 case 8:
-                    Random_slang_word();
+                    System.out.println("Your slang word today is: ");
+                    String random_key = Random_slang_word();
+                    System.out.println(random_key + "   :   " + slangMap.get(random_key));
                     break;
             }
             System.out.println("\n\nPress 'Enter' to continue or type 'e' to exit");
@@ -264,12 +266,12 @@ public class slang {
         }
     }
 
-    public static void Random_slang_word() {
+    public static String Random_slang_word() { //return index
         Random generator = new Random();
         Object[] values = slangMap.values().toArray();
         Object randomValue = values[generator.nextInt(values.length)];
         String key = Find_with_value(String.valueOf(randomValue)).get(0);
-        System.out.println(key + " : " + randomValue);
+        return key;
     }
 
     public static void Back_up_origin() {
