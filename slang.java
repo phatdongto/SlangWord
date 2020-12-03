@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 // import java.lang.String;
@@ -200,7 +201,7 @@ public class slang {
             System.out.println("5. Edit slang word");
             System.out.println("6. Delete slang word");
             System.out.println("7. Back up origin");
-            // System.out.println("");
+            System.out.println("8. Random slang word");
             // System.out.println("");
             // System.out.println("");
             System.out.print("Enter your choose: ");
@@ -254,10 +255,21 @@ public class slang {
                 case 7:
                     Back_up_origin();
                     break;
+                case 8:
+                    Random_slang_word();
+                    break;
             }
             System.out.println("\n\nPress 'Enter' to continue or type 'e' to exit");
             out = keyboard.next();
         }
+    }
+
+    public static void Random_slang_word() {
+        Random generator = new Random();
+        Object[] values = slangMap.values().toArray();
+        Object randomValue = values[generator.nextInt(values.length)];
+        String key = Find_with_value(String.valueOf(randomValue)).get(0);
+        System.out.println(key + " : " + randomValue);
     }
 
     public static void Back_up_origin() {
@@ -293,7 +305,6 @@ public class slang {
     public static void main(String[] args) {
         slangMap = GetSlangMap("testdata.txt");
         GUI();
-        // System.out.println(Find_with_value("Penis"));
     }
 }
 
