@@ -28,6 +28,15 @@ public class slang {
     public static ArrayList<String> history = new ArrayList<String>();
     // String "testdata.txt" = "testdata.txt";
 
+    public static int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    public static void PauseTest(){
+        System.out.println("Press Any Key To Continue...");
+        new java.util.Scanner(System.in).nextLine();
+    }
+    
     public static HashMap<String, String> GetSlangMap(String url) {
         
         try{
@@ -202,7 +211,7 @@ public class slang {
             System.out.println("6. Delete slang word");
             System.out.println("7. Back up origin");
             System.out.println("8. Random slang word");
-            // System.out.println("");
+            System.out.println("9. Game of slang word");
             // System.out.println("");
             System.out.print("Enter your choose: ");
             int choose = keyboard.nextInt();
@@ -260,13 +269,40 @@ public class slang {
                     String random_key = Random_slang_word();
                     System.out.println(random_key + "   :   " + slangMap.get(random_key));
                     break;
+                case 9:
+                    Game_of_slang();
+                    break;
             }
-            System.out.println("\n\nPress 'Enter' to continue or type 'e' to exit");
-            out = keyboard.next();
+            PauseTest();
         }
     }
 
-    public static String Random_slang_word() { //return index
+    public static void Game_of_slang() {
+        ArrayList<String> ansList = new ArrayList<String>();
+        String tmp = Random_slang_word();
+        for(int i = 0; i < 4; i++){
+            while(ansList.contains(tmp))
+                tmp = Random_slang_word();
+            ansList.add(tmp);
+        }
+        int true_key_index = getRandomNumber(0, 3);
+        System.out.println("The mysterious slang word is: " + ansList.get(true_key_index));
+        System.out.println("Answer: ");
+        System.out.println("1. " + slangMap.get(ansList.get(0)));
+        System.out.println("2. " + slangMap.get(ansList.get(1)));
+        System.out.println("3. " + slangMap.get(ansList.get(2)));
+        System.out.println("4. " + slangMap.get(ansList.get(3)));
+        System.out.print("\nYour choose is: "); 
+        int choose = keyboard.nextInt(); 
+        //String c = keyboard.nextLine();
+        if (choose - 1 == true_key_index){
+            System.out.println("Congrat!!! correct answer !!!");
+        }else{
+            System.out.println("Oops!!! Wrong answer");
+        }
+    }
+
+    public static String Random_slang_word() { // return index
         Random generator = new Random();
         Object[] values = slangMap.values().toArray();
         Object randomValue = values[generator.nextInt(values.length)];
