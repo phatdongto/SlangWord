@@ -25,6 +25,7 @@ public class slang {
     public static Scanner keyboard = new Scanner(System.in);
     public static HashMap<String, String> slangMap = new HashMap<String, String>();
     public static ArrayList<String> history = new ArrayList<String>();
+    // String "testdata.txt" = "testdata.txt";
 
     public static HashMap<String, String> GetSlangMap(String url) {
         
@@ -114,8 +115,6 @@ public class slang {
         }
     }
 
-
-
     public static void ShowHistory() {
         try{
             File file = new File("history.txt");
@@ -199,7 +198,7 @@ public class slang {
             System.out.println("3. Show history");
             System.out.println("4. Add new slang word");
             System.out.println("5. Edit slang word");
-            // System.out.println("");
+            System.out.println("6. Delete slang word");
             // System.out.println("");
             System.out.print("Enter your choose: ");
             int choose = keyboard.nextInt();
@@ -245,14 +244,26 @@ public class slang {
                     Edit_slang_word(edit_key, edit_value);
                     break;
                 case 6:
-                System.out.println("Saturday");
-                break;
+                    System.out.print("Slang word you want to delete: ");
+                    String delete_slang = keyboard.nextLine();
+                    Delete_slang_word(delete_slang);
+                    break;
                 case 7:
                 System.out.println("Sunday");
                 break;
             }
             System.out.println("\n\nPress 'Enter' to continue or type 'e' to exit");
             out = keyboard.next();
+        }
+    }
+
+    public static void Delete_slang_word(String delete_slang) {
+        if(slangMap.containsKey(delete_slang)){
+            slangMap.remove(delete_slang);
+            Truncate_to_file("testdata.txt");
+        }
+        else{
+            System.out.println("Slang word not found !!!");
         }
     }
 
