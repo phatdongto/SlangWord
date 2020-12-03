@@ -105,7 +105,7 @@ public class slang {
                     pw.println(a + "`" + slangMap.get(a));
                 }
             } catch (Exception e) {
-                System.out.println("Can't trancate to file");
+                System.out.println("Can't truncate to file");
             } finally{
                 pw.close();
             }
@@ -199,6 +199,9 @@ public class slang {
             System.out.println("4. Add new slang word");
             System.out.println("5. Edit slang word");
             System.out.println("6. Delete slang word");
+            System.out.println("7. Back up origin");
+            // System.out.println("");
+            // System.out.println("");
             // System.out.println("");
             System.out.print("Enter your choose: ");
             int choose = keyboard.nextInt();
@@ -249,18 +252,38 @@ public class slang {
                     Delete_slang_word(delete_slang);
                     break;
                 case 7:
-                System.out.println("Sunday");
-                break;
+                    Back_up_origin();
+                    break;
             }
             System.out.println("\n\nPress 'Enter' to continue or type 'e' to exit");
             out = keyboard.next();
         }
     }
 
+    public static void Back_up_origin() {
+        System.out.println("\n1. Set this slang word list as origin.");
+        System.out.println("2. Reset to oringin.");
+        String choose = keyboard.nextLine();
+        if(choose.equals("1")){
+            Truncate_to_file("origin.txt");
+            System.out.println("Set origin successfully");
+        }else{
+            slangMap.clear();
+            slangMap = GetSlangMap("origin.txt");
+            Truncate_to_file("testdata.txt");
+            System.out.println("Set origin successfully");
+        }
+    }
+
     public static void Delete_slang_word(String delete_slang) {
         if(slangMap.containsKey(delete_slang)){
-            slangMap.remove(delete_slang);
-            Truncate_to_file("testdata.txt");
+            System.out.println("Are you sure? (y/n)");
+            String choose = keyboard.nextLine();
+            if (choose.equals("y")){
+                slangMap.remove(delete_slang);
+                Truncate_to_file("testdata.txt");
+                System.out.println("Delete successfully");
+            }
         }
         else{
             System.out.println("Slang word not found !!!");
