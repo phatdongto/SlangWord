@@ -165,25 +165,25 @@ public class slang {
     public static void Add_slang_word(String slang_key, String def_value) {
        String choose;
         if(slangMap.containsKey(slang_key)){
-            System.out.println("Slang word duplicate !!!");
-            System.out.println("Choose 1 to overwrite");
-            System.out.println("Choose 2 to duplicate to new slang word");
+            System.out.println("!!! Slang word duplicate !!!");
+            System.out.println(">> Choose 1 to overwrite");
+            System.out.println(">> Choose 2 to duplicate to new slang word");
             System.out.print("Your choose: ");
             choose = keyboard.nextLine();
             if(choose.equals("1")){
                 slangMap.put(slang_key, def_value);
                 Truncate_to_file("testdata.txt");
-                System.out.println("Overwrite successfully");
+                System.out.println("!!! Overwrite successfully !!!");
             }else{
                 slangMap.put(slang_key, slangMap.get(slang_key) + "| " + def_value );
                 Truncate_to_file("testdata.txt");
-                System.out.println("Duplicate successfully");
+                System.out.println("!!! Duplicate successfully !!!");
             }
 
         }else{
             slangMap.put(slang_key, def_value);
             Append_to_file(slang_key + "`" + def_value + "\n", "testdata.txt");
-            System.out.println("Add new slangword successfully");
+            System.out.println("!!! Add new slangword successfully !!!");
         }
     }
     
@@ -191,9 +191,9 @@ public class slang {
         if(slangMap.containsKey(edit_key)){
             slangMap.put(edit_key, edit_value);
             Truncate_to_file("testdata.txt");
-            System.out.println("Edit completed");
+            System.out.println("!!! Edit completed !!!");
         }else{
-            System.out.println("Slang word not found !!!");
+            System.out.println("!!! Slang word not found !!!");
         }
     }
     
@@ -202,8 +202,8 @@ public class slang {
         while(!"e".equals(out)){
             // System.out.print("\033[H\033[2J");
             // System.out.flush();
-
-            System.out.println("1. Slang word");
+            System.out.println("!!!>>>>>WELCOME<<<<<!!!");
+            System.out.println("1. Find with slang word");
             System.out.println("2. Find with definition");
             System.out.println("3. Show history");
             System.out.println("4. Add new slang word");
@@ -214,12 +214,12 @@ public class slang {
             System.out.println("9. Game of slang word");
             System.out.println("10. Game of definition");
             System.out.println("11. Exit");
-            System.out.print("Enter your choose: ");
+            System.out.print("@@ Enter your choose: ");
             int choose = keyboard.nextInt();
             String c = keyboard.nextLine();
             switch (choose) {
                 case 1:
-                    System.out.print("Your slang word: ");
+                    System.out.print("@@ Your slang word: ");
                     String key = keyboard.nextLine();
                     String value = Find_with_slang(key);
                     if(!(value == null)){
@@ -231,7 +231,7 @@ public class slang {
                     }
                     break;
                 case 2:
-                    System.out.print("Your definition: ");
+                    System.out.print("@@ Your definition: ");
                     String def = keyboard.nextLine();
                     ArrayList<String> keySet = Find_with_value(def);
                     System.out.println("Slang word of " + def + " is: ");
@@ -251,9 +251,9 @@ public class slang {
                     Add_slang_word(slang_key, def_value);
                     break;
                 case 5:
-                    System.out.print("Enter slang word: ");
+                    System.out.print("@@ Enter slang word you want to edit: ");
                     String edit_key = keyboard.nextLine();
-                    System.out.print("Enter definition: ");
+                    System.out.print("@@ Enter definition of slang word: ");
                     String edit_value = keyboard.nextLine();
                     Edit_slang_word(edit_key, edit_value);
                     break;
@@ -266,7 +266,7 @@ public class slang {
                     Back_up_origin();
                     break;
                 case 8:
-                    System.out.println("Your slang word today is: ");
+                    System.out.println("\n^^ Your slang word today is: ");
                     String random_key = Random_slang_word();
                     System.out.println(random_key + "   :   " + slangMap.get(random_key));
                     break;
@@ -318,7 +318,7 @@ public class slang {
             ansList.add(tmp);
         }
         int true_key_index = getRandomNumber(0, 3);
-        System.out.println("The mysterious slang word is: " + ansList.get(true_key_index));
+        System.out.println("\n^^ The mysterious slang word is: " + ansList.get(true_key_index));
         System.out.println("Answer: ");
         System.out.println("1. " + slangMap.get(ansList.get(0)));
         System.out.println("2. " + slangMap.get(ansList.get(1)));
@@ -344,31 +344,33 @@ public class slang {
 
     public static void Back_up_origin() {
         System.out.println("\n1. Set this slang word list as origin.");
-        System.out.println("2. Reset to oringin.");
+        System.out.println("2. Reset to origin.");
+        System.out.print("@@Your choose: ");
         String choose = keyboard.nextLine();
         if(choose.equals("1")){
             Truncate_to_file("origin.txt");
-            System.out.println("Set origin successfully");
+            System.out.println("!!! Set this as origin successfully !!!");
         }else{
             slangMap.clear();
             slangMap = GetSlangMap("origin.txt");
             Truncate_to_file("testdata.txt");
-            System.out.println("Set origin successfully");
+            System.out.println("!!! Reset to origin successfully !!!");
         }
     }
 
     public static void Delete_slang_word(String delete_slang) {
         if(slangMap.containsKey(delete_slang)){
-            System.out.println("Are you sure? (y/n)");
+            System.out.println(">> Are you sure? (y/n)");
+            System.out.print("@@ Your choose: ");
             String choose = keyboard.nextLine();
             if (choose.equals("y")){
                 slangMap.remove(delete_slang);
                 Truncate_to_file("testdata.txt");
-                System.out.println("Delete successfully");
+                System.out.println("!!! Delete successfully !!!");
             }
         }
         else{
-            System.out.println("Slang word not found !!!");
+            System.out.println("!!! Slang word not found !!!");
         }
     }
 
