@@ -212,7 +212,8 @@ public class slang {
             System.out.println("7. Back up origin");
             System.out.println("8. Random slang word");
             System.out.println("9. Game of slang word");
-            // System.out.println("");
+            System.out.println("10. Game of definition");
+            System.out.println("11. Exit");
             System.out.print("Enter your choose: ");
             int choose = keyboard.nextInt();
             String c = keyboard.nextLine();
@@ -272,8 +273,39 @@ public class slang {
                 case 9:
                     Game_of_slang();
                     break;
+                case 10:
+                    Game_of_definition();
+                    break;
+                case 11:
+                    out = "e";
+                    break;
             }
             PauseTest();
+        }
+    }
+
+    public static void Game_of_definition() {
+        ArrayList<String> ansList = new ArrayList<String>();
+        String tmp = Random_slang_word();
+        for(int i = 0; i < 4; i++){
+            while(ansList.contains(tmp))
+                tmp = Random_slang_word();
+            ansList.add(tmp);
+        }
+        int true_key_index = getRandomNumber(0, 3);
+        System.out.println("The mysterious slang word is: " + slangMap.get(ansList.get(true_key_index)));
+        System.out.println("Answer: ");
+        System.out.println("1. " + ansList.get(0));
+        System.out.println("2. " + ansList.get(1));
+        System.out.println("3. " + ansList.get(2));
+        System.out.println("4. " + ansList.get(3));
+        System.out.print("\nYour choose is: "); 
+        int choose = keyboard.nextInt(); 
+        //String c = keyboard.nextLine();
+        if (choose - 1 == true_key_index){
+            System.out.println("Congrat!!! correct answer !!!");
+        }else{
+            System.out.println("Oops!!! Wrong answer");
         }
     }
 
